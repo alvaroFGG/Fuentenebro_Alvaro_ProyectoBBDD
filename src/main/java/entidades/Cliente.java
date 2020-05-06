@@ -140,7 +140,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return idCliente + " " + codigoCliente + " " + empresa + " " + contacto + " " + cargoContacto + " " + direccion + " " + ciudad + " " + region + " " + codigoPostal + " " + pais + " " + tlfno + " " + fax;
+        return idCliente + "\t" + "\t"+ codigoCliente + "\t" +"\t"+ empresa + "\t" + "\t"+contacto + "\t" +"\t"+ cargoContacto ;
     }
     
     
