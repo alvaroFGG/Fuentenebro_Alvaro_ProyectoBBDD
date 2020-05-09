@@ -184,4 +184,49 @@ public class ClientesDAO {
         return resultado;
     }
     
+    
+    public Boolean update(Cliente cliente){
+        Boolean resultado = null;
+        PreparedStatement stmt = null;
+        
+        if(this.conexion==null||cliente==null){
+            return false;
+        }
+        
+        try{
+            String update = "UPDATE clientes SET codigo = ?, empresa = ?, contacto = ?, cargo_contacto = ?, direccion = ?, ciudad = ?, region = ?, cp = ?, pais = ?, telefono = ?, fax = ? WHERE id = ?";
+            
+            stmt = conexion.prepareStatement(update);
+            stmt.setString(1, cliente.getCodigoCliente());
+            stmt.setString(2, cliente.getEmpresa());
+            stmt.setString(3, cliente.getContacto());
+            stmt.setString(4, cliente.getCargoContacto());
+            stmt.setString(5, cliente.getDireccion());
+            stmt.setString(6, cliente.getCiudad());
+            stmt.setString(7, cliente.getRegion());
+            stmt.setString(8, cliente.getCodigoPostal());
+            stmt.setString(9, cliente.getPais());
+            stmt.setString(10, cliente.getTlfno());
+            stmt.setString(11, cliente.getFax());
+            
+            stmt.setInt(12, cliente.getIdCliente());
+            
+            if(stmt.executeUpdate()>0){
+                resultado = true;
+            }
+            
+        }catch(SQLException e){
+            System.out.println("Sentencia incorrecta en UPDATE : "+e.getMessage());
+        }finally{
+            try{
+                if(stmt!=null){
+                    stmt.close();
+                }
+            }catch(SQLException e){
+                System.out.println("Error al cerrar la conexion: "+e.getMessage());
+            }
+        }
+        return resultado;
+    }
+    
 }
