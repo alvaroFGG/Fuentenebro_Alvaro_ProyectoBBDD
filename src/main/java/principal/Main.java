@@ -11,6 +11,7 @@ package principal;
  */
 import entidades.Cliente;
 import clientesDAO.ClientesDAO;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class Main {
 
@@ -34,9 +35,10 @@ public class Main {
     public static void visualizarClientes(){
         Cliente cliente = new Cliente();
         ClientesDAO clientes = new ClientesDAO();
-        System.out.println("id"+"\t"+"\t"+"CodigoCliente"+ "\t"+"\t"+"Empresa"+ "\t"+"\t"+"Contacto"+"\t"+"\t"+"CargoContacto");
+        System.out.println("id"+"\t"+"\t"+"    CodigoCliente"+ "\t"+"\t"+"      Empresa"+ "\t"+"\t"+"\t\t\tContacto"+"\t"+"\t\t"+"CargoContacto");
+        System.out.println();
         for(Cliente e:clientes.listarClientes(0)){
-            System.out.println(e);
+            System.out.printf("%d %30s\t %30s \t%30s\t %30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
         }
     }
     
@@ -47,7 +49,7 @@ public class Main {
         
         while(!parar){
             Scanner in = new Scanner(System.in);
-            
+            Integer opcion=0;
             System.out.println();
             System.out.println("\t"+"****MENU****");
             System.out.println("---------------------------------");
@@ -59,16 +61,24 @@ public class Main {
             System.out.println("6- Si desea actualizar un cliente");
             System.out.println("0- Si desea SALIR del menu");
             System.out.println("---------------------------------");
-            Integer opcion = in.nextInt();
             
+            try{
+                opcion = in.nextInt();
+            }catch(InputMismatchException e){
+                System.out.println("Introduce solo numeros:");
+            }
             switch(opcion){
                 case 1:
                     siguientes+=10;
                     mostrarSiguientes(siguientes);
                     break;
                 case 2:
-                    siguientes=comprobar(siguientes);;
+                    if(siguientes==0){
+                        System.out.println("No hay menos clientes");
+                    }else{
+                    siguientes-=10;
                     mostrarSiguientes(siguientes);
+                    }
                     break;
                 case 3:
                     readCliente();
@@ -100,9 +110,10 @@ public class Main {
         ClientesDAO clientes = new ClientesDAO();
         
         System.out.println("Visualizando los 10 siguientes Clientes");
-        System.out.println("id"+"\t"+"\t"+"CodigoCliente"+ "\t"+"\t"+"Empresa"+ "\t"+"\t"+"Contacto"+"\t"+"\t"+"CargoContacto");
+        System.out.println("id"+"\t"+"\t"+"    CodigoCliente"+ "\t"+"\t"+"      Empresa"+ "\t"+"\t"+"\t\t\tContacto"+"\t"+"\t\t"+"CargoContacto");
+        System.out.println();
         for(Cliente e: clientes.listarClientes(siguientes)){
-            System.out.println(e);
+            System.out.printf("%d %30s\t %30s \t%30s\t %30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
         }
     }
     
@@ -218,9 +229,10 @@ public class Main {
         
         while(true){
             try{
+                System.out.println();
                 System.out.println("El cliente que ha elegido es: "+cliente.toString());
                 
-                Integer eleccion;
+                Integer eleccion=0;
                 
                 System.out.println("En el siguiente menu, elija la opcion que desee...");
                 System.out.println("\t"+"****MENU****");
@@ -240,7 +252,18 @@ public class Main {
                 System.out.println("0- Para salir del MENU");
                 System.out.println("----------------------------------------");
                 
-                eleccion = in.nextInt();
+               
+                
+                    try{
+                        eleccion = in.nextInt();
+                    }catch(InputMismatchException e){
+                        System.out.println("Introduce solo numeros: ");
+                        
+                    }
+                
+                
+                
+                
                 if(eleccion>0 && eleccion<12){
                     System.out.print("Introduzca la modificacion: ");
                 }
@@ -298,6 +321,7 @@ public class Main {
                 
             }catch(NumberFormatException e){
                 System.out.println("Introduce numeros:");
+                
             }
         }
     }
