@@ -229,4 +229,45 @@ public class ClientesDAO {
         return resultado;
     }
     
+    public ArrayList<Cliente> listarUltimos(){
+        Cliente cliente = null;
+        ArrayList<Cliente> lista = new ArrayList<>();
+        PreparedStatement stmt = null;
+        
+        if(this.getConexion()==null){
+            return null;
+        }
+        
+        
+        try{
+            String select = "SELECT * FROM clientes ORDER BY id DESC LIMIT 10";
+            stmt = conexion.prepareStatement(select);
+            
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                cliente = new Cliente(
+                        rs.getInt("id"),
+                        rs.getString("codigo"),
+                        rs.getString("empresa"),
+                        rs.getString("contacto"),
+                        rs.getString("cargo_contacto"),
+                        rs.getString("direccion"),
+                        rs.getString("ciudad"),
+                        rs.getString("region"),
+                        rs.getString("cp"),
+                        rs.getString("pais"),
+                        rs.getString("telefono"),
+                        rs.getString("fax")
+                );
+                lista.add(cliente);
+            }
+        }catch(SQLException e){
+            System.out.println("Sentencia incorrecta: "+e.getMessage());
+        }
+        
+        return lista;
+        
+    }
+    
 }

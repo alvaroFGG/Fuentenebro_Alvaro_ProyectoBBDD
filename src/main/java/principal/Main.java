@@ -25,22 +25,14 @@ public class Main {
         ClientesDAO clientes = new ClientesDAO();
         
         System.out.println("Estos son los 10 primeros clientes:");
-        visualizarClientes();
+        mostrarSiguientes(0);
         
         //despuesd de visualizar los 10 primeros clientes se mostrara el menu
         mostrarMenu();
         
     }
     
-    public static void visualizarClientes(){
-        Cliente cliente = new Cliente();
-        ClientesDAO clientes = new ClientesDAO();
-        System.out.println("id"+"\t"+"\t"+"    CodigoCliente"+ "\t"+"\t"+"      Empresa"+ "\t"+"\t"+"\t\t\tContacto"+"\t"+"\t\t"+"CargoContacto");
-        System.out.println();
-        for(Cliente e:clientes.listarClientes(0)){
-            System.out.printf("%d %30s\t %30s \t%30s\t %30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
-        }
-    }
+
     
     
     public static void mostrarMenu(){
@@ -49,25 +41,35 @@ public class Main {
         
         while(!parar){
             Scanner in = new Scanner(System.in);
-            Integer opcion=0;
+            
             System.out.println();
             System.out.println("\t"+"****MENU****");
-            System.out.println("---------------------------------");
+            System.out.println("=========================================");
             System.out.println("1- Mostrar los 10 siguientes");
             System.out.println("2- Mostrar los 10 anteriores");
             System.out.println("3- Mostrar un cliente por ID");
             System.out.println("4- Si desea añadir un cliente");
             System.out.println("5- Si desea eliminar un cliente");
             System.out.println("6- Si desea actualizar un cliente");
+            System.out.println("-----------------------------------------");
+            System.out.println("7- Para volver a mostrar los 10 primeros");
+            System.out.println("8- Para mostrar los 10 ultimos");
+            System.out.println("-----------------------------------------");
             System.out.println("0- Si desea SALIR del menu");
-            System.out.println("---------------------------------");
+            System.out.println("=========================================");
+            int eleccion=0;
             
-            try{
-                opcion = in.nextInt();
-            }catch(InputMismatchException e){
-                System.out.println("Introduce solo numeros:");
+            while(true){
+                try{
+                     String opcion = in.nextLine();
+                     eleccion = Integer.parseInt(opcion);
+                     break;
+                }catch(NumberFormatException e){
+                    System.out.println("Introduce solo numeros.\n Vuelve a introducir la opcion:");
+                }
             }
-            switch(opcion){
+            
+            switch(eleccion){
                 case 1:
                     siguientes+=10;
                     mostrarSiguientes(siguientes);
@@ -93,6 +95,12 @@ public class Main {
                 case 6:
                     actualizarCliente();
                     break;
+                case 7:
+                    mostrarSiguientes(0);
+                    break;
+                case 8:
+                    mostrarUltimos();
+                    break;
                 case 0:
                     System.out.println("Saliendo del menu...");
                     parar = true;
@@ -110,10 +118,10 @@ public class Main {
         ClientesDAO clientes = new ClientesDAO();
         
         System.out.println("Visualizando los 10 siguientes Clientes");
-        System.out.println("id"+"\t"+"\t"+"    CodigoCliente"+ "\t"+"\t"+"      Empresa"+ "\t"+"\t"+"\t\t\tContacto"+"\t"+"\t\t"+"CargoContacto");
+        System.out.println("id  Codigo      Empresa\t\t\t\t\tContacto\t\t\tCargoContacto");
         System.out.println();
         for(Cliente e: clientes.listarClientes(siguientes)){
-            System.out.printf("%d %30s\t %30s \t%30s\t %30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
+            System.out.printf("%03d %-6s %-40s %-30s %-30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
         }
     }
     
@@ -236,7 +244,7 @@ public class Main {
                 
                 System.out.println("En el siguiente menu, elija la opcion que desee...");
                 System.out.println("\t"+"****MENU****");
-                System.out.println("------------------------------------------");
+                System.out.println("-----------------------------------------------------");
                 System.out.println("1- Cambiar el Codigo de Cliente(no confundir con ID)");
                 System.out.println("2- Cambiar el nombre de la Empresa");
                 System.out.println("3- Cambiar el nombre del contacto");
@@ -248,18 +256,21 @@ public class Main {
                 System.out.println("9- Cambiar el pais");
                 System.out.println("10- Cambiar el Telefono de contacto");
                 System.out.println("11- Cambiar el fax");
-                System.out.println("----------------------------------------");
+                System.out.println("----------------------------------------------------");
                 System.out.println("0- Para salir del MENU");
-                System.out.println("----------------------------------------");
+                System.out.println("----------------------------------------------------");
                 
                
                 
+                while(true){
                     try{
-                        eleccion = in.nextInt();
-                    }catch(InputMismatchException e){
-                        System.out.println("Introduce solo numeros: ");
-                        
+                         String opcion = in.nextLine();
+                         eleccion = Integer.parseInt(opcion);
+                         break;
+                    }catch(NumberFormatException e){
+                        System.out.println("Introduce solo numeros.\n Vuelve a introducir la opcion:");
                     }
+                }
                 
                 
                 
@@ -323,6 +334,18 @@ public class Main {
                 System.out.println("Introduce numeros:");
                 
             }
+        }
+    }
+    
+    public static void mostrarUltimos(){
+        Cliente cliente = new Cliente();
+        ClientesDAO clientes = new ClientesDAO();
+        
+        System.out.println("Visualizando los 10 ULTIMOS Clientes");
+        System.out.println("id  Codigo      Empresa\t\t\t\t\tContacto\t\t\tCargoContacto");
+        System.out.println();
+        for(Cliente e: clientes.listarUltimos()){
+            System.out.printf("%03d %-6s %-40s %-30s %-30s\n",e.getIdCliente(), e.getCodigoCliente(), e.getEmpresa(), e.getContacto(), e.getCargoContacto());
         }
     }
 }
